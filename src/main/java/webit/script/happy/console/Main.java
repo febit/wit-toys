@@ -17,23 +17,23 @@ public class Main {
 
     public static void main(String[] args) {
         final Scanner sc = new Scanner(System.in);
-        printWellcome();
-        String message;
+        sayWellcome();
+        String command;
         while (true) {
-            printCodeRequest();
-            message = sc.nextLine().trim();
-            if (message.isEmpty()) {
+            askforCommand();
+            command = sc.nextLine().trim();
+            if (command.isEmpty()) {
                 continue;
             }
-            if (message.equals("exit")) {
+            if (command.equals("exit")) {
                 break;
             }
-            dealTemplate(message);
+            mergeTemplate(command);
         }
-        printGoodBye();
+        sayGoodBye();
     }
 
-    private static void dealTemplate(String message) {
+    private static void mergeTemplate(String message) {
         try {
             println(">>>");
             engine.getTemplate(message).merge(System.out);
@@ -50,18 +50,18 @@ public class Main {
         }
     }
 
-    private static void printCodeRequest() {
+    private static void askforCommand() {
         println("<<<");
     }
-
-    private static void printWellcome() {
+    
+    private static void sayWellcome() {
         println("============================================");
         println("    Wellcome Webit Script World \\(^o^)/");
         println("                    QQ群：302505483");
         println("============================================");
     }
 
-    private static void printGoodBye() {
+    private static void sayGoodBye() {
         println("Bye (^_^)∠※");
     }
 
