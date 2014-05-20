@@ -1,0 +1,7 @@
+
+# Webit Script Engine 配置文件
+# happy-console.props
+
+[routeLoader-main]
+default=webit.script.happy.console.ConsoleLoader
+
