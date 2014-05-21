@@ -1,0 +1,10 @@
+<%
+var CONST;
+
+CONST.exit = function(){
+    console.exitFlag = true;
+};
+
+
+
+%>
