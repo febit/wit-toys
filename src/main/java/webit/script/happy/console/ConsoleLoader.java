@@ -15,7 +15,7 @@ public class ConsoleLoader implements Loader {
 
     @Override
     public Resource get(String name) throws ResourceNotFoundException {
-        return new StringResource("<% " + name);
+        return new StringResource("<% \n" + name);
     }
 
     @Override

@@ -4,11 +4,13 @@ package webit.script.happy.console;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import webit.script.Engine;
+import webit.script.Template;
 import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
@@ -112,21 +114,46 @@ public class Console {
     }
 
     protected void mergeTemplate(List<String> commands) {
+        Template template = null;
         try {
             println(">>>");
-            engine.getTemplate(StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator())).merge(out);
+            template = engine.getTemplate(StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
+            template.merge(out);
             println();
+        } catch (ParseException ex) {
+            println("语法错误: " + ex.getMessage());
+            if (template == ex.getTemplate()) {
+                printCommandLinePosition(commands.get(ex.getLine() - 2), ex.getLine() - 1, ex.getColumn());
+            } else {
+                println("** 赞未支持非控制台资源的错误行打印");
+            }
+        } catch (ScriptRuntimeException ex) {
+            //XXX: 显示语法错误
+            //XXX: 纠正行显示错误
+            println("运行时异常: " + ex.getMessage());
         } catch (ResourceNotFoundException ex) {
             println("找不到文件了: " + ex.getMessage());
-        } catch (ParseException ex) {
-            //XXX： 显示语法错误
-            println("应该是语法错了: " + ex.getMessage());
-        } catch (ScriptRuntimeException ex) {
-            //XXX： 显示语法错误
-            println("运行错了: " + ex.getMessage());
         } catch (Exception ex) {
             println("不知道是什么出错了: " + ex.getMessage());
         }
+    }
+
+    protected void printCommandLinePosition(String commandLine, int line, int column) {
+        int headLength;
+        headLength = printCommandLineNumber(line);
+        println(commandLine);
+        //TODO: 全角字符长度
+        printPosition(column + headLength);
+    }
+
+    protected void printPosition(int column) {
+        if (column <= 0) {
+            return;
+        }
+        char[] msg = new char[column];
+        Arrays.fill(msg, 0, column - 1, ' ');
+        msg[column - 1] = '^';
+        println(msg);
     }
 
     protected void askforCommand() {
@@ -145,7 +172,7 @@ public class Console {
         println("Bye (^_^)∠※");
     }
 
-    protected void printCommandLineNumber(int number) {
+    protected int printCommandLineNumber(int number) {
         StringBuilder sb = new StringBuilder(6);
         if (number >= 10) {
             sb.append(number);
@@ -155,6 +182,7 @@ public class Console {
         }
         sb.append("| ");
         print(sb.toString());
+        return sb.length();
     }
 
     protected void println(String msg) {
@@ -162,6 +190,10 @@ public class Console {
     }
 
     protected void println(char msg) {
+        this.out.println(msg);
+    }
+
+    protected void println(char[] msg) {
         this.out.println(msg);
     }
 
