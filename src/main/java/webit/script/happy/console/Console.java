@@ -3,7 +3,9 @@ package webit.script.happy.console;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import webit.script.Engine;
@@ -11,6 +13,7 @@ import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
 import webit.script.happy.console.util.EnvUtil;
+import webit.script.happy.console.util.StringUtil;
 
 /**
  *
@@ -21,14 +24,24 @@ public class Console {
     private Engine engine;
     private final String engineProps;
 
-    private final PrintStream out;
-    private final Scanner scanner;
     private final ConsoleAttrabutes consoleAttrabutes;
+    private Scanner scanner;
+    private InputStream in;
+    private PrintStream out;
+
+    private final static char MULTI_LINE_START = '>';
+    private final static char MULTI_LINE_END = '<';
+
+    public final static String LINE_SEPARATOR_UNIX = "\n";
+    public final static String LINE_SEPARATOR_IOS = "\r";
+    public final static String LINE_SEPARATOR_WINDOWS = "\r\n";
+
+    private final List<String> commandLines = new ArrayList<String>();
 
     public Console(String props, PrintStream out, InputStream in) {
         this.engineProps = props;
         this.out = out;
-        this.scanner = new Scanner(in);
+        this.in = in;
         this.consoleAttrabutes = new ConsoleAttrabutes();
         init();
     }
@@ -38,28 +51,54 @@ public class Console {
         attrabutes.setExitFlag(false);
         attrabutes.setCurrentPath(EnvUtil.getUserDir());
         attrabutes.setEncoding("UTF-8");
-        
+        attrabutes.setLineSeparator(LINE_SEPARATOR_UNIX);
+
         Map<String, Object> settings = new HashMap<String, Object>();
         settings.put(ConsoleGlobalRegister.CONSOLE_CONFIG_KEY, attrabutes);
-        
+
+        this.scanner = new Scanner(in, attrabutes.getEncoding());
         this.engine = Engine.createEngine(engineProps, settings);
     }
-    
-    protected String nextCommand() {
+
+    protected List<String> nextCommand() {
         askforCommand();
-        String line = this.scanner.nextLine().trim();
-        return line;
+        final List<String> lines = this.commandLines;
+        lines.clear();
+        int multiLineStartCharCount = 0;
+        int lineNumber = 0;
+        while (true) {
+            String line = this.scanner.nextLine();
+            if (multiLineStartCharCount == 0) {
+                //判定是否是>>..>，否则按单行command
+                if (line.isEmpty()) {
+                    continue;
+                }
+                if (StringUtil.isRepeatOfChar(line, MULTI_LINE_START)) {
+                    multiLineStartCharCount = line.length();
+                    printCommandLineNumber(++lineNumber);
+                } else {
+                    lines.add(line);
+                    break;
+                }
+            } else {
+                //多行模式
+                if (line.length() == multiLineStartCharCount
+                        && StringUtil.isRepeatOfChar(line, MULTI_LINE_END)) {
+                    break;
+                } else {
+                    printCommandLineNumber(++lineNumber);
+                    lines.add(line);
+                }
+            }
+        }
+        return lines;
     }
 
     public void command(String[] args) {
         sayWellcome();
-        String command;
+        List<String> command;
         while (true) {
             command = nextCommand();
-            if (command.isEmpty()) {
-                continue;
-            }
-            //
             mergeTemplate(command);
             if (requestExit()) {
                 break;
@@ -72,10 +111,10 @@ public class Console {
         return this.consoleAttrabutes.isExitFlag();
     }
 
-    protected void mergeTemplate(String message) {
+    protected void mergeTemplate(List<String> commands) {
         try {
             println(">>>");
-            engine.getTemplate(message).merge(out);
+            engine.getTemplate(StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator())).merge(out);
             println();
         } catch (ResourceNotFoundException ex) {
             println("找不到文件了: " + ex.getMessage());
@@ -104,6 +143,18 @@ public class Console {
 
     protected void sayGoodBye() {
         println("Bye (^_^)∠※");
+    }
+
+    protected void printCommandLineNumber(int number) {
+        StringBuilder sb = new StringBuilder(6);
+        if (number >= 10) {
+            sb.append(number);
+        } else {
+            sb.append(' ')
+                    .append(number);
+        }
+        sb.append("| ");
+        print(sb.toString());
     }
 
     protected void println(String msg) {

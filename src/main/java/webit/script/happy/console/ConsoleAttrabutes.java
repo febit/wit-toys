@@ -1,5 +1,4 @@
 // Copyright (c) 2013, Webit Team. All Rights Reserved.
-
 package webit.script.happy.console;
 
 /**
@@ -7,10 +6,11 @@ package webit.script.happy.console;
  * @author Zqq
  */
 public class ConsoleAttrabutes {
-    
+
     private boolean exitFlag;
     private String currentPath;
     private String encoding;
+    private String lineSeparator;
 
     public boolean isExitFlag() {
         return exitFlag;
@@ -35,5 +35,13 @@ public class ConsoleAttrabutes {
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
-    
+
+    public String getLineSeparator() {
+        return lineSeparator;
+    }
+
+    public void setLineSeparator(String lineSeparator) {
+        this.lineSeparator = lineSeparator;
+    }
+
 }
