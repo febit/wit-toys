@@ -3,6 +3,7 @@ package webit.script.happy.console;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
 import webit.script.happy.console.util.EnvUtil;
+import webit.script.happy.console.util.PrintStreamWriter;
 import webit.script.happy.console.util.StringUtil;
 
 /**
@@ -29,7 +31,8 @@ public class Console {
     private final ConsoleAttrabutes consoleAttrabutes;
     private Scanner scanner;
     private InputStream in;
-    private PrintStream out;
+    private final PrintStream out;
+    private final Writer writer;
 
     private final static char MULTI_LINE_START = '>';
     private final static char MULTI_LINE_END = '<';
@@ -43,6 +46,7 @@ public class Console {
     public Console(String props, PrintStream out, InputStream in) {
         this.engineProps = props;
         this.out = out;
+        this.writer = new PrintStreamWriter(out);
         this.in = in;
         this.consoleAttrabutes = new ConsoleAttrabutes();
         init();
@@ -52,7 +56,8 @@ public class Console {
         final ConsoleAttrabutes attrabutes = this.consoleAttrabutes;
         attrabutes.setExitFlag(false);
         attrabutes.setCurrentPath(EnvUtil.getUserDir());
-        attrabutes.setEncoding("UTF-8");
+        attrabutes.setEncoding(EnvUtil.getFileEncoding());
+
         attrabutes.setLineSeparator(LINE_SEPARATOR_UNIX);
 
         Map<String, Object> settings = new HashMap<String, Object>();
@@ -118,12 +123,13 @@ public class Console {
         try {
             println(">>>");
             template = engine.getTemplate(StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
-            template.merge(out);
+            template.merge(writer);
             println();
         } catch (ParseException ex) {
-            println("语法错误: " + ex.getMessage());
+            ex.setLine(ex.getLine() - 1); //fix line
+            println("语法错误: " + ex.getMessage()); //XXX: fix line misstake in message
             if (template == ex.getTemplate()) {
-                printCommandLinePosition(commands.get(ex.getLine() - 2), ex.getLine() - 1, ex.getColumn());
+                printCommandLinePosition(commands.get(ex.getLine() - 1), ex.getLine(), ex.getColumn());
             } else {
                 println("** 赞未支持非控制台资源的错误行打印");
             }
@@ -142,8 +148,13 @@ public class Console {
         int headLength;
         headLength = printCommandLineNumber(line);
         println(commandLine);
-        //TODO: 全角字符长度
-        printPosition(column + headLength);
+        int ahead;
+        if (column > commandLine.length()) {
+            ahead = StringUtil.getDbcLength(commandLine, 0, commandLine.length()) + column - commandLine.length();
+        } else {
+            ahead = StringUtil.getDbcLength(commandLine, 0, column);
+        }
+        printPosition(headLength + ahead);
     }
 
     protected void printPosition(int column) {
@@ -163,7 +174,7 @@ public class Console {
     protected void sayWellcome() {
         println("============================================");
         println("    Wellcome Webit Script World  \\(^o^)/");
-        println("                   build：2014.05.21");
+        println("                   build：2014.05.31");
         println("                    QQ群：302505483");
         println("============================================");
     }

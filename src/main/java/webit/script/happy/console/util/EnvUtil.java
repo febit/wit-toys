@@ -16,4 +16,7 @@ public class EnvUtil {
         return get("user.dir");
     }
 
+    public static String getFileEncoding() {
+        return get("file.encoding");
+    }
 }

@@ -55,5 +55,43 @@ public class StringUtil {
         }
         return sb.toString();
     }
+    
+    
+    /**
+     * 是否是 半角字符
+     *
+     * @param c
+     * @return
+     */
+    public static boolean isDbcCase(char c) {
+        if (c <= 127) {
+            return true;
+        }
+        // 日文半角片假名和符号
+        if (c >= 65377 && c <= 65439) {
+            return true;
+        }
+        return false;
+    }
 
+    /**
+     * 按 1全角=2半角 计算长度
+     *
+     * @param value
+     * @return
+     */
+    public static int getDbcLength(String value) {
+        return getDbcLength(value, 0, value.length());
+    }
+    
+    public static int getDbcLength(String value, int from, int to) {
+        to = Math.min(to, value.length());
+        int result = to - from;
+        for (int i = from; i < to; i++) {
+            if (!isDbcCase(value.charAt(i))) {
+                result++;
+            }
+        }
+        return result;
+    }
 }
