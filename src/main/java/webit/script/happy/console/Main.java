@@ -10,7 +10,7 @@ public class Main {
     private final static String PROPS_PATH = "happy-console.props";
 
     public static void main(String[] args) {
-        new Console(PROPS_PATH, System.out, System.in).command(args);
+        new Console(PROPS_PATH, System.out, System.in).start(args);
     }
 
 }

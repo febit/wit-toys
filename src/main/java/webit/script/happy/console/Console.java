@@ -30,6 +30,7 @@ public class Console {
 
     private final ConsoleAttrabutes consoleAttrabutes;
     private Scanner scanner;
+    private String currentScannerEncoding;
     private InputStream in;
     private final PrintStream out;
     private final Writer writer;
@@ -37,9 +38,6 @@ public class Console {
     private final static char MULTI_LINE_START = '>';
     private final static char MULTI_LINE_END = '<';
 
-    public final static String LINE_SEPARATOR_UNIX = "\n";
-    public final static String LINE_SEPARATOR_IOS = "\r";
-    public final static String LINE_SEPARATOR_WINDOWS = "\r\n";
 
     private final List<String> commandLines = new ArrayList<String>();
 
@@ -58,13 +56,28 @@ public class Console {
         attrabutes.setCurrentPath(EnvUtil.getUserDir());
         attrabutes.setEncoding(EnvUtil.getFileEncoding());
 
-        attrabutes.setLineSeparator(LINE_SEPARATOR_UNIX);
-
         Map<String, Object> settings = new HashMap<String, Object>();
         settings.put(ConsoleGlobalRegister.CONSOLE_CONFIG_KEY, attrabutes);
 
-        this.scanner = new Scanner(in, attrabutes.getEncoding());
+        currentScannerEncoding = attrabutes.getEncoding();
+        //this.scanner = new Scanner(in, attrabutes.getEncoding());
         this.engine = Engine.createEngine(engineProps, settings);
+    }
+
+    protected String nextLine() {
+        Scanner myScanner = this.scanner;
+        String encoding = consoleAttrabutes.getEncoding();
+        if (myScanner == null
+                || (encoding != null && !encoding.equals(currentScannerEncoding))
+                || (encoding == null && currentScannerEncoding != null)) {
+            currentScannerEncoding = encoding;
+            if (encoding != null) {
+                this.scanner = myScanner = new Scanner(in, encoding);
+            } else {
+                this.scanner = myScanner = new Scanner(in);
+            }
+        }
+        return myScanner.nextLine();
     }
 
     protected List<String> nextCommand() {
@@ -74,7 +87,7 @@ public class Console {
         int multiLineStartCharCount = 0;
         int lineNumber = 0;
         while (true) {
-            String line = this.scanner.nextLine();
+            String line = nextLine();
             if (multiLineStartCharCount == 0) {
                 //判定是否是>>..>，否则按单行command
                 if (line.isEmpty()) {
@@ -101,11 +114,12 @@ public class Console {
         return lines;
     }
 
-    public void command(String[] args) {
+    public void start(String[] args) {
         sayWellcome();
         List<String> command;
         while (true) {
             command = nextCommand();
+            println(">>>");
             mergeTemplate(command);
             if (requestExit()) {
                 break;
@@ -121,7 +135,6 @@ public class Console {
     protected void mergeTemplate(List<String> commands) {
         Template template = null;
         try {
-            println(">>>");
             template = engine.getTemplate(StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
             template.merge(writer);
             println();
@@ -168,7 +181,7 @@ public class Console {
     }
 
     protected void askforCommand() {
-        println(this.consoleAttrabutes.getCurrentPath() + " >");
+        println(this.consoleAttrabutes.getCurrentPath() + ">");
     }
 
     protected void sayWellcome() {

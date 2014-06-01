@@ -1,10 +1,14 @@
 <%
 var CONST;
+@import webit.script.happy.console.ConsoleAttrabutes;
 
 CONST.exit = function(){
     console.exitFlag = true;
 };
 
-
+var console_cd = native ConsoleAttrabutes.cd(String);
+CONST.cd = function(to){
+    return console_cd(console, to);
+};
 
 %>
