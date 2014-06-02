@@ -10,14 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import webit.script.Context;
 import webit.script.Engine;
 import webit.script.Template;
+import webit.script.core.runtime.VariantContext;
 import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
+import webit.script.global.GlobalManager;
 import webit.script.happy.console.util.EnvUtil;
 import webit.script.happy.console.util.PrintStreamWriter;
 import webit.script.happy.console.util.StringUtil;
+import webit.script.util.SimpleBag;
 
 /**
  *
@@ -136,7 +140,7 @@ public class Console {
     public void showLastException() {
         if (lastException != null) {
             lastException.printStackTrace(out);
-        }else{
+        } else {
             println("没有发生异常");
         }
     }
@@ -152,8 +156,23 @@ public class Console {
         Template template = null;
         try {
             template = engine.getTemplate("cmd:" + StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
-            template.merge(writer);
+            Context context = template.merge(writer);
             println();
+            //export to global
+            //XXX: NPE context.exportTo(vars);
+            VariantContext variantContext = context.vars.getCurrentContext();
+            if (variantContext != null) {
+                Map<Object, Object> vars = new HashMap<Object, Object>();
+                variantContext.exportTo(vars);
+                if (vars.size() > 0) {
+                    GlobalManager globalManager = this.engine.getGlobalManager();
+                    SimpleBag gobalBag = globalManager.getGlobalBag();
+                    for (Map.Entry<Object, Object> entry : vars.entrySet()) {
+                        gobalBag.set(entry.getKey(), entry.getValue());
+                    }
+                    globalManager.commit();
+                };
+            }
             this.lastException = null;
         } catch (ParseException ex) {
             this.lastException = ex;
