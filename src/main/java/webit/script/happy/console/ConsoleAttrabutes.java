@@ -24,6 +24,7 @@ public class ConsoleAttrabutes {
     private boolean exitFlag = false;
     private String currentPath;
     private String encoding;
+    private String fileEncoding = "UTF-8";
 
     public String cd(String to){
         String path = UnixStyleFileNameUtil.concat(currentPath, to);
@@ -57,6 +58,14 @@ public class ConsoleAttrabutes {
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    public String getFileEncoding() {
+        return fileEncoding;
+    }
+
+    public void setFileEncoding(String fileEncoding) {
+        this.fileEncoding = fileEncoding;
     }
 
     public String getLineSeparator() {

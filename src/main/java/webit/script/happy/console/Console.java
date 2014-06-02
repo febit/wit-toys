@@ -25,6 +25,8 @@ import webit.script.happy.console.util.StringUtil;
  */
 public class Console {
 
+    public static final String CONSOLE_CONFIG_KEY =  "CONSOLE_CONFIG";
+    
     private Engine engine;
     private final String engineProps;
 
@@ -37,7 +39,6 @@ public class Console {
 
     private final static char MULTI_LINE_START = '>';
     private final static char MULTI_LINE_END = '<';
-
 
     private final List<String> commandLines = new ArrayList<String>();
 
@@ -57,7 +58,7 @@ public class Console {
         attrabutes.setEncoding(EnvUtil.getFileEncoding());
 
         Map<String, Object> settings = new HashMap<String, Object>();
-        settings.put(ConsoleGlobalRegister.CONSOLE_CONFIG_KEY, attrabutes);
+        settings.put(CONSOLE_CONFIG_KEY, attrabutes);
 
         currentScannerEncoding = attrabutes.getEncoding();
         //this.scanner = new Scanner(in, attrabutes.getEncoding());
@@ -135,13 +136,13 @@ public class Console {
     protected void mergeTemplate(List<String> commands) {
         Template template = null;
         try {
-            template = engine.getTemplate(StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
+            template = engine.getTemplate("cmd:" + StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
             template.merge(writer);
             println();
         } catch (ParseException ex) {
             ex.setLine(ex.getLine() - 1); //fix line
             println("语法错误: " + ex.getMessage()); //XXX: fix line misstake in message
-            if (template == ex.getTemplate()) {
+            if (template == ex.getTemplate() && ex.getLine() >= 1) {
                 printCommandLinePosition(commands.get(ex.getLine() - 1), ex.getLine(), ex.getColumn());
             } else {
                 println("** 赞未支持非控制台资源的错误行打印");
@@ -187,7 +188,7 @@ public class Console {
     protected void sayWellcome() {
         println("============================================");
         println("    Wellcome Webit Script World  \\(^o^)/");
-        println("                   build：2014.05.31");
+        println("                   build：2014.06.02");
         println("                    QQ群：302505483");
         println("============================================");
     }

@@ -14,7 +14,6 @@ import webit.script.util.SimpleBag;
 public class ConsoleGlobalRegister implements GlobalRegister, Initable {
 
     public static final String CONSOLE = "console";
-    public static final String CONSOLE_CONFIG_KEY = ConsoleGlobalRegister.class + ".CONSOLE_CONFIG_KEY";
 
     private ConsoleAttrabutes consoleAttrabutes;
 
@@ -26,7 +25,7 @@ public class ConsoleGlobalRegister implements GlobalRegister, Initable {
 
     @Override
     public void init(Engine engine) {
-        this.consoleAttrabutes = (ConsoleAttrabutes) engine.getConfig(CONSOLE_CONFIG_KEY);
+        this.consoleAttrabutes = (ConsoleAttrabutes) engine.getConfig(Console.CONSOLE_CONFIG_KEY);
     }
 
 }

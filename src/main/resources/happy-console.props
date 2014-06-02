@@ -9,8 +9,11 @@ inits +='''
 '''
 
 [routeLoader-main]
-default=webit.script.happy.console.ConsoleLoader
-
+default=webit.script.happy.console.loader.ConsoleFileLoader-consoleFile
+loaders +='''
+file: webit.script.happy.console.loader.ConsoleFileLoader-consoleFile
+cmd:  webit.script.happy.console.loader.ConsoleLoader
+'''
 
 [global]
 registers += webit.script.happy.console.ConsoleGlobalRegister

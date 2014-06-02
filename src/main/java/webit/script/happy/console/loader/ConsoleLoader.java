@@ -1,7 +1,8 @@
 // Copyright (c) 2013, Webit Team. All Rights Reserved.
-package webit.script.happy.console;
+package webit.script.happy.console.loader;
 
 import webit.script.exceptions.ResourceNotFoundException;
+import webit.script.happy.console.ConsoleAttrabutes;
 import webit.script.loaders.Loader;
 import webit.script.loaders.Resource;
 import webit.script.loaders.impl.resources.StringResource;
@@ -13,6 +14,7 @@ import webit.script.loaders.impl.resources.StringResource;
  */
 public class ConsoleLoader implements Loader {
 
+    
     @Override
     public Resource get(String name) throws ResourceNotFoundException {
         return new StringResource("<% \n" + name);
