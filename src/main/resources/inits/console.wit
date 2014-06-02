@@ -11,4 +11,17 @@ CONST.cd = function(to){
     return console_cd(console, to);
 };
 
+var console_exec = native ConsoleAttrabutes.exec(String);
+CONST.exec = function(template){
+    return console_exec(console, template);
+};
+
+
+var console_showLastException = native ConsoleAttrabutes.showLastException();
+CONST.showLastException = function(){
+    return console_showLastException(console);
+};
+
+
+
 %>

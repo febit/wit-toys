@@ -25,8 +25,8 @@ import webit.script.happy.console.util.StringUtil;
  */
 public class Console {
 
-    public static final String CONSOLE_CONFIG_KEY =  "CONSOLE_CONFIG";
-    
+    public static final String CONSOLE_CONFIG_KEY = "CONSOLE_CONFIG";
+
     private Engine engine;
     private final String engineProps;
 
@@ -47,7 +47,7 @@ public class Console {
         this.out = out;
         this.writer = new PrintStreamWriter(out);
         this.in = in;
-        this.consoleAttrabutes = new ConsoleAttrabutes();
+        this.consoleAttrabutes = new ConsoleAttrabutes(this);
         init();
     }
 
@@ -133,13 +133,30 @@ public class Console {
         return this.consoleAttrabutes.isExitFlag();
     }
 
+    public void showLastException() {
+        if (lastException != null) {
+            lastException.printStackTrace(out);
+        }else{
+            println("没有发生异常");
+        }
+    }
+    private Exception lastException;
+
+    protected void mergeTemplate(String command) throws ResourceNotFoundException, ParseException, ScriptRuntimeException {
+        Template template = null;
+        template = engine.getTemplate(command);
+        template.merge(writer);
+    }
+
     protected void mergeTemplate(List<String> commands) {
         Template template = null;
         try {
             template = engine.getTemplate("cmd:" + StringUtil.join(commands, this.consoleAttrabutes.getLineSeparator()));
             template.merge(writer);
             println();
+            this.lastException = null;
         } catch (ParseException ex) {
+            this.lastException = ex;
             ex.setLine(ex.getLine() - 1); //fix line
             println("语法错误: " + ex.getMessage()); //XXX: fix line misstake in message
             if (template == ex.getTemplate() && ex.getLine() >= 1) {
@@ -148,12 +165,16 @@ public class Console {
                 println("** 赞未支持非控制台资源的错误行打印");
             }
         } catch (ScriptRuntimeException ex) {
+            this.lastException = ex;
             //XXX: 显示语法错误
             //XXX: 纠正行显示错误
             println("运行时异常: " + ex.getMessage());
+            ex.printStackTrace(out);
         } catch (ResourceNotFoundException ex) {
+            this.lastException = ex;
             println("找不到文件了: " + ex.getMessage());
         } catch (Exception ex) {
+            this.lastException = ex;
             println("不知道是什么出错了: " + ex.getMessage());
         }
     }

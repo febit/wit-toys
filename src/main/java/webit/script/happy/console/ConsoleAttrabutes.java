@@ -2,6 +2,8 @@
 package webit.script.happy.console;
 
 import java.io.File;
+import webit.script.exceptions.ParseException;
+import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
 import webit.script.util.UnixStyleFileNameUtil;
 
@@ -18,24 +20,36 @@ public class ConsoleAttrabutes {
     public final static int PATH_SHOW_MODE_FULL_PATH = 1;
     public final static int PATH_SHOW_MODE_SHORT_PATH = 2;
 
-    
     private int pathShowMode = PATH_SHOW_MODE_FULL_PATH;
     private String lineSeparator = LINE_SEPARATOR_UNIX;
     private boolean exitFlag = false;
     private String currentPath;
     private String encoding;
     private String fileEncoding = "UTF-8";
+    private final Console console;
 
-    public String cd(String to){
+    public ConsoleAttrabutes(Console console) {
+        this.console = console;
+    }
+
+    public String cd(String to) {
         String path = UnixStyleFileNameUtil.concat(currentPath, to);
         File file = new File(path);
         if (file.exists() == false) {
-            throw new ScriptRuntimeException("path not found: "+ path);
+            throw new ScriptRuntimeException("path not found: " + path);
         }
         this.currentPath = file.getAbsolutePath();
         return path;
-    } 
+    }
+
+    public void exec(String template) throws ResourceNotFoundException, ParseException, ScriptRuntimeException {
+        console.mergeTemplate(template);
+    }
     
+    public void showLastException(){
+        console.showLastException();
+    }
+
     public boolean isExitFlag() {
         return exitFlag;
     }
