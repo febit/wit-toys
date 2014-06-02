@@ -22,6 +22,11 @@ CONST.showLastException = function(){
     return console_showLastException(console);
 };
 
+var console_dir = native ConsoleAttrabutes.dir(String);
+CONST.dir = 
+CONST.ls  = function(path){
+    console_dir(console,path);
+};
 
 
 %>

@@ -45,8 +45,29 @@ public class ConsoleAttrabutes {
     public void exec(String template) throws ResourceNotFoundException, ParseException, ScriptRuntimeException {
         console.mergeTemplate(template);
     }
-    
-    public void showLastException(){
+
+    public void dir(String to) {
+        String path;
+        if (to != null) {
+            path = UnixStyleFileNameUtil.concat(currentPath, to);
+        } else {
+            path = currentPath;
+        }
+        File file = new File(path);
+        if (file.exists() == false) {
+            throw new ScriptRuntimeException("path not found: " + path);
+        }
+        if (file.isDirectory() == false) {
+            throw new ScriptRuntimeException("path not a directory: " + path);
+        }
+        File[] files = file.listFiles();
+        console.println("Find " + files.length + " files:");
+        for (File file1 : files) {
+            console.println("    " + file1.getName());
+        }
+    }
+
+    public void showLastException() {
         console.showLastException();
     }
 
