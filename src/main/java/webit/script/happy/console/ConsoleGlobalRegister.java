@@ -5,7 +5,7 @@ import webit.script.Engine;
 import webit.script.Initable;
 import webit.script.global.GlobalManager;
 import webit.script.global.GlobalRegister;
-import webit.script.util.SimpleBag;
+import webit.script.lang.Bag;
 
 /**
  *
@@ -19,7 +19,7 @@ public class ConsoleGlobalRegister implements GlobalRegister, Initable {
 
     @Override
     public void regist(GlobalManager manager) {
-        SimpleBag constBag = manager.getConstBag();
+        Bag constBag = manager.getConstBag();
         constBag.set(CONSOLE, this.consoleAttrabutes);
     }
 

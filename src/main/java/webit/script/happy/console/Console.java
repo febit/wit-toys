@@ -13,7 +13,7 @@ import java.util.Scanner;
 import webit.script.Context;
 import webit.script.Engine;
 import webit.script.Template;
-import webit.script.core.runtime.VariantContext;
+import webit.script.core.VariantContext;
 import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
@@ -21,7 +21,7 @@ import webit.script.global.GlobalManager;
 import webit.script.happy.console.util.EnvUtil;
 import webit.script.happy.console.util.PrintStreamWriter;
 import webit.script.happy.console.util.StringUtil;
-import webit.script.util.SimpleBag;
+import webit.script.lang.Bag;
 
 /**
  *
@@ -37,7 +37,7 @@ public class Console {
     private final ConsoleAttrabutes consoleAttrabutes;
     private Scanner scanner;
     private String currentScannerEncoding;
-    private InputStream in;
+    private final InputStream in;
     private final PrintStream out;
     private final Writer writer;
 
@@ -166,7 +166,7 @@ public class Console {
                 variantContext.exportTo(vars);
                 if (vars.size() > 0) {
                     GlobalManager globalManager = this.engine.getGlobalManager();
-                    SimpleBag gobalBag = globalManager.getGlobalBag();
+                    Bag gobalBag = globalManager.getGlobalBag();
                     for (Map.Entry<Object, Object> entry : vars.entrySet()) {
                         gobalBag.set(entry.getKey(), entry.getValue());
                     }
@@ -176,7 +176,6 @@ public class Console {
             this.lastException = null;
         } catch (ParseException ex) {
             this.lastException = ex;
-            ex.setLine(ex.getLine() - 1); //fix line
             println("语法错误: " + ex.getMessage()); //XXX: fix line misstake in message
             if (template == ex.getTemplate() && ex.getLine() >= 1) {
                 printCommandLinePosition(commands.get(ex.getLine() - 1), ex.getLine(), ex.getColumn());

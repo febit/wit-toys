@@ -25,7 +25,7 @@ public class ConsoleFileLoader implements Loader, Initable {
     }
 
     @Override
-    public Resource get(String name) throws ResourceNotFoundException {
+    public Resource get(String name) {
         String path = UnixStyleFileNameUtil.concat(consoleAttrabutes.getCurrentPath(), name);
         return new FileResource(path, consoleAttrabutes.getFileEncoding());
     }
