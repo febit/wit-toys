@@ -13,7 +13,6 @@ import java.util.Scanner;
 import webit.script.Context;
 import webit.script.Engine;
 import webit.script.Template;
-import webit.script.core.VariantContext;
 import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
@@ -21,7 +20,6 @@ import webit.script.global.GlobalManager;
 import webit.script.happy.console.util.EnvUtil;
 import webit.script.happy.console.util.PrintStreamWriter;
 import webit.script.happy.console.util.StringUtil;
-import webit.script.lang.Bag;
 
 /**
  *
@@ -147,9 +145,7 @@ public class Console {
     private Exception lastException;
 
     protected void mergeTemplate(String command) throws ResourceNotFoundException, ParseException, ScriptRuntimeException {
-        Template template = null;
-        template = engine.getTemplate(command);
-        template.merge(writer);
+        engine.getTemplate(command).merge(writer);
     }
 
     protected void mergeTemplate(List<String> commands) {
@@ -159,19 +155,14 @@ public class Console {
             Context context = template.merge(writer);
             println();
             //export to global
-            //XXX: NPE context.exportTo(vars);
-            VariantContext variantContext = context.vars.getCurrentContext();
-            if (variantContext != null) {
-                Map<Object, Object> vars = new HashMap<Object, Object>();
-                variantContext.exportTo(vars);
-                if (vars.size() > 0) {
-                    GlobalManager globalManager = this.engine.getGlobalManager();
-                    Bag gobalBag = globalManager.getGlobalBag();
-                    for (Map.Entry<Object, Object> entry : vars.entrySet()) {
-                        gobalBag.set(entry.getKey(), entry.getValue());
-                    }
-                    globalManager.commit();
-                };
+            Map<String, Object> vars = new HashMap<String, Object>();
+            context.exportTo(vars);
+            if (!vars.isEmpty()) {
+                GlobalManager globalManager = this.engine.getGlobalManager();
+                for (Map.Entry<String, Object> entry : vars.entrySet()) {
+                    globalManager.setGlobal(entry.getKey(), entry.getValue());
+                }
+                globalManager.commit();
             }
             this.lastException = null;
         } catch (ParseException ex) {
@@ -185,7 +176,6 @@ public class Console {
         } catch (ScriptRuntimeException ex) {
             this.lastException = ex;
             //XXX: 显示语法错误
-            //XXX: 纠正行显示错误
             println("运行时异常: " + ex.getMessage());
             ex.printStackTrace(out);
         } catch (ResourceNotFoundException ex) {

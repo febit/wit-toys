@@ -3,13 +3,12 @@ package webit.script.happy.console.loader;
 
 import webit.script.Engine;
 import webit.script.Initable;
-import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.happy.console.Console;
 import webit.script.happy.console.ConsoleAttrabutes;
 import webit.script.loaders.Loader;
 import webit.script.loaders.Resource;
 import webit.script.loaders.impl.resources.FileResource;
-import webit.script.util.UnixStyleFileNameUtil;
+import webit.script.util.FileNameUtil;
 
 /**
  *
@@ -26,18 +25,18 @@ public class ConsoleFileLoader implements Loader, Initable {
 
     @Override
     public Resource get(String name) {
-        String path = UnixStyleFileNameUtil.concat(consoleAttrabutes.getCurrentPath(), name);
+        String path = FileNameUtil.concat(consoleAttrabutes.getCurrentPath(), name);
         return new FileResource(path, consoleAttrabutes.getFileEncoding());
     }
 
     @Override
     public String concat(String parent, String name) {
-        return UnixStyleFileNameUtil.concat(parent, name);
+        return FileNameUtil.concat(parent, name);
     }
 
     @Override
     public String normalize(String name) {
-        return UnixStyleFileNameUtil.concat(consoleAttrabutes.getCurrentPath(), name);
+        return FileNameUtil.concat(consoleAttrabutes.getCurrentPath(), name);
     }
 
     @Override

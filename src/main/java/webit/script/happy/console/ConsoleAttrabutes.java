@@ -5,7 +5,7 @@ import java.io.File;
 import webit.script.exceptions.ParseException;
 import webit.script.exceptions.ResourceNotFoundException;
 import webit.script.exceptions.ScriptRuntimeException;
-import webit.script.util.UnixStyleFileNameUtil;
+import webit.script.util.FileNameUtil;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ConsoleAttrabutes {
     }
 
     public String cd(String to) {
-        String path = UnixStyleFileNameUtil.concat(currentPath, to);
+        String path = FileNameUtil.concat(currentPath, to);
         File file = new File(path);
         if (file.exists() == false) {
             throw new ScriptRuntimeException("path not found: " + path);
@@ -49,7 +49,7 @@ public class ConsoleAttrabutes {
     public void dir(String to) {
         String path;
         if (to != null) {
-            path = UnixStyleFileNameUtil.concat(currentPath, to);
+            path = FileNameUtil.concat(currentPath, to);
         } else {
             path = currentPath;
         }
