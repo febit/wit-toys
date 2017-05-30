@@ -8,15 +8,15 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
     
     <dependencies>
         <dependency>
-            <groupId>com.github.zqq90.webit-script</groupId>
-            <artifactId>webit-script</artifactId>
-            <version>1.5</version>
+            <groupId>org.febit.wit</groupId>
+            <artifactId>wit-core</artifactId>
+            <version>2.0.0-beta</version>
         </dependency>
     </dependencies>
 </project>

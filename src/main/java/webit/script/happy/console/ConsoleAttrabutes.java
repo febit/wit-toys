@@ -2,10 +2,10 @@
 package webit.script.happy.console;
 
 import java.io.File;
-import webit.script.exceptions.ParseException;
-import webit.script.exceptions.ResourceNotFoundException;
-import webit.script.exceptions.ScriptRuntimeException;
-import webit.script.util.FileNameUtil;
+import org.febit.wit.exceptions.ParseException;
+import org.febit.wit.exceptions.ResourceNotFoundException;
+import org.febit.wit.exceptions.ScriptRuntimeException;
+import org.febit.wit.util.FileNameUtil;
 
 /**
  *

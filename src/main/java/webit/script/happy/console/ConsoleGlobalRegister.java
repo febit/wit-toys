@@ -1,16 +1,16 @@
 // Copyright (c) 2013, Webit Team. All Rights Reserved.
 package webit.script.happy.console;
 
-import webit.script.Engine;
-import webit.script.Initable;
-import webit.script.global.GlobalManager;
-import webit.script.global.GlobalRegister;
+import org.febit.wit.Engine;
+import org.febit.wit.Init;
+import org.febit.wit.global.GlobalManager;
+import org.febit.wit.global.GlobalRegister;
 
 /**
  *
  * @author Zqq
  */
-public class ConsoleGlobalRegister implements GlobalRegister, Initable {
+public class ConsoleGlobalRegister implements GlobalRegister {
 
     public static final String CONSOLE = "console";
 
@@ -21,9 +21,8 @@ public class ConsoleGlobalRegister implements GlobalRegister, Initable {
         manager.setConst(CONSOLE, this.consoleAttrabutes);
     }
 
-    @Override
+    @Init
     public void init(Engine engine) {
         this.consoleAttrabutes = (ConsoleAttrabutes) engine.getConfig(Console.CONSOLE_CONFIG_KEY);
     }
-
 }

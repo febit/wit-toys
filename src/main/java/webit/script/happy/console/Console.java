@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import webit.script.Context;
-import webit.script.Engine;
-import webit.script.Template;
-import webit.script.exceptions.ParseException;
-import webit.script.exceptions.ResourceNotFoundException;
-import webit.script.exceptions.ScriptRuntimeException;
-import webit.script.global.GlobalManager;
+import org.febit.wit.Context;
+import org.febit.wit.Engine;
+import org.febit.wit.Template;
+import org.febit.wit.exceptions.ParseException;
+import org.febit.wit.exceptions.ResourceNotFoundException;
+import org.febit.wit.exceptions.ScriptRuntimeException;
+import org.febit.wit.global.GlobalManager;
 import webit.script.happy.console.util.EnvUtil;
 import webit.script.happy.console.util.PrintStreamWriter;
 import webit.script.happy.console.util.StringUtil;
@@ -42,7 +42,7 @@ public class Console {
     private final static char MULTI_LINE_START = '>';
     private final static char MULTI_LINE_END = '<';
 
-    private final List<String> commandLines = new ArrayList<String>();
+    private final List<String> commandLines = new ArrayList<>();
 
     public Console(String props, PrintStream out, InputStream in) {
         this.engineProps = props;
@@ -59,12 +59,12 @@ public class Console {
         attrabutes.setCurrentPath(EnvUtil.getUserDir());
         attrabutes.setEncoding(EnvUtil.getFileEncoding());
 
-        Map<String, Object> settings = new HashMap<String, Object>();
+        Map<String, Object> settings = new HashMap<>();
         settings.put(CONSOLE_CONFIG_KEY, attrabutes);
 
         currentScannerEncoding = attrabutes.getEncoding();
         //this.scanner = new Scanner(in, attrabutes.getEncoding());
-        this.engine = Engine.createEngine(engineProps, settings);
+        this.engine = Engine.create(engineProps, settings);
     }
 
     protected String nextLine() {
@@ -155,7 +155,7 @@ public class Console {
             Context context = template.merge(writer);
             println();
             //export to global
-            Map<String, Object> vars = new HashMap<String, Object>();
+            Map<String, Object> vars = new HashMap<>();
             context.exportTo(vars);
             if (!vars.isEmpty()) {
                 GlobalManager globalManager = this.engine.getGlobalManager();
@@ -171,7 +171,7 @@ public class Console {
             if (template == ex.getTemplate() && ex.getLine() >= 1) {
                 printCommandLinePosition(commands.get(ex.getLine() - 1), ex.getLine(), ex.getColumn());
             } else {
-                println("** 赞未支持非控制台资源的错误行打印");
+                println("** 不支持非控制台资源的错误行打印");
             }
         } catch (ScriptRuntimeException ex) {
             this.lastException = ex;
@@ -216,8 +216,8 @@ public class Console {
 
     protected void sayWellcome() {
         println("============================================");
-        println("    Wellcome Webit Script World  \\(^o^)/");
-        println("                   build：2014.06.02");
+        println("    Wellcome Febit Wit World  \\(^o^)/");
+        println("                   build：2017.05.30");
         println("                    QQ群：302505483");
         println("============================================");
     }

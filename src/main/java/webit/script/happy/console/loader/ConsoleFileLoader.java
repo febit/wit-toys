@@ -1,24 +1,24 @@
 // Copyright (c) 2013, Webit Team. All Rights Reserved.
 package webit.script.happy.console.loader;
 
-import webit.script.Engine;
-import webit.script.Initable;
+import org.febit.wit.Engine;
+import org.febit.wit.Init;
 import webit.script.happy.console.Console;
 import webit.script.happy.console.ConsoleAttrabutes;
-import webit.script.loaders.Loader;
-import webit.script.loaders.Resource;
-import webit.script.loaders.impl.resources.FileResource;
-import webit.script.util.FileNameUtil;
+import org.febit.wit.loaders.Loader;
+import org.febit.wit.loaders.Resource;
+import org.febit.wit.loaders.impl.resources.FileResource;
+import org.febit.wit.util.FileNameUtil;
 
 /**
  *
  * @author Zqq
  */
-public class ConsoleFileLoader implements Loader, Initable {
+public class ConsoleFileLoader implements Loader {
 
     private ConsoleAttrabutes consoleAttrabutes;
     
-    @Override
+    @Init
     public void init(Engine engine) {
         this.consoleAttrabutes = (ConsoleAttrabutes) engine.getConfig(Console.CONSOLE_CONFIG_KEY);
     }

@@ -7,10 +7,9 @@ package webit.script.happy.console;
  */
 public class Main {
 
-    private final static String PROPS_PATH = "happy-console.props";
+    private final static String PROPS_PATH = "happy-console.wim";
 
     public static void main(String[] args) {
         new Console(PROPS_PATH, System.out, System.in).start(args);
     }
-
 }

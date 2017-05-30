@@ -1,9 +1,9 @@
 // Copyright (c) 2013, Webit Team. All Rights Reserved.
 package webit.script.happy.console.loader;
 
-import webit.script.loaders.Loader;
-import webit.script.loaders.Resource;
-import webit.script.loaders.impl.resources.StringResource;
+import org.febit.wit.loaders.Loader;
+import org.febit.wit.loaders.Resource;
+import org.febit.wit.loaders.impl.resources.StringResource;
 
 /**
  * 资源加载器
@@ -14,7 +14,7 @@ public class ConsoleLoader implements Loader {
 
     @Override
     public Resource get(String name) {
-        return new StringResource("<% " + name).setOffset(0, 3);
+        return new StringResource(name, true);
     }
 
     @Override
