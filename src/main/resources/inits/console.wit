@@ -1,31 +1,25 @@
 <%
 var CONST;
-@import webit.script.happy.console.ConsoleAttrabutes;
 
 CONST.exit = function(){
     console.exitFlag = true;
 };
 
-var console_cd = native ConsoleAttrabutes.cd(String);
 CONST.cd = function(to){
-    return console_cd(console, to);
+    return console.~cd(to);
 };
 
-var console_exec = native ConsoleAttrabutes.exec(String);
 CONST.exec = function(template){
-    return console_exec(console, template);
+    return console.~exec(template);
 };
 
-
-var console_showLastException = native ConsoleAttrabutes.showLastException();
 CONST.showLastException = function(){
-    return console_showLastException(console);
+    return console.~showLastException(console);
 };
 
-var console_dir = native ConsoleAttrabutes.dir(String);
 CONST.dir = 
 CONST.ls  = function(path){
-    console_dir(console,path);
+    console.~dir(path);
 };
 
 

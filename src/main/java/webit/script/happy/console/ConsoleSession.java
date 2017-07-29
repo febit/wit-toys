@@ -11,7 +11,7 @@ import org.febit.wit.util.FileNameUtil;
  *
  * @author Zqq
  */
-public class ConsoleAttrabutes {
+public class ConsoleSession {
 
     public final static String LINE_SEPARATOR_UNIX = "\n";
     public final static String LINE_SEPARATOR_IOS = "\r";
@@ -28,7 +28,7 @@ public class ConsoleAttrabutes {
     private String fileEncoding = "UTF-8";
     private final Console console;
 
-    public ConsoleAttrabutes(Console console) {
+    public ConsoleSession(Console console) {
         this.console = console;
     }
 

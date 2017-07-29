@@ -28,33 +28,32 @@ import webit.script.happy.console.util.StringUtil;
 public class Console {
 
     public static final String CONSOLE_CONFIG_KEY = "CONSOLE_CONFIG";
+    private final static char MULTI_LINE_START = '>';
+    private final static char MULTI_LINE_END = '<';
 
     private Engine engine;
     private final String engineProps;
 
-    private final ConsoleAttrabutes consoleAttrabutes;
     private Scanner scanner;
     private String currentScannerEncoding;
     private final InputStream in;
     private final PrintStream out;
     private final Writer writer;
-
-    private final static char MULTI_LINE_START = '>';
-    private final static char MULTI_LINE_END = '<';
-
-    private final List<String> commandLines = new ArrayList<>();
+    private final List<String> commandLines;
+    private final ConsoleSession consoleAttrabutes;
 
     public Console(String props, PrintStream out, InputStream in) {
+        this.commandLines = new ArrayList<>();
         this.engineProps = props;
         this.out = out;
         this.writer = new PrintStreamWriter(out);
         this.in = in;
-        this.consoleAttrabutes = new ConsoleAttrabutes(this);
+        this.consoleAttrabutes = new ConsoleSession(this);
         init();
     }
 
     private void init() {
-        final ConsoleAttrabutes attrabutes = this.consoleAttrabutes;
+        final ConsoleSession attrabutes = this.consoleAttrabutes;
         attrabutes.setExitFlag(false);
         attrabutes.setCurrentPath(EnvUtil.getUserDir());
         attrabutes.setEncoding(EnvUtil.getFileEncoding());
@@ -217,8 +216,6 @@ public class Console {
     protected void sayWellcome() {
         println("============================================");
         println("    Wellcome Febit Wit World  \\(^o^)/");
-        println("                   build：2017.05.30");
-        println("                    QQ群：302505483");
         println("============================================");
     }
 

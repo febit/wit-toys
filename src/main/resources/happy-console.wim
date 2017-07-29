@@ -1,14 +1,13 @@
 
-# Webit Script Engine 配置文件
-# happy-console.wim
+# Wit Engine 配置文件
+
+[consoleFileLoader :webit.script.happy.console.loader.ConsoleFileLoader]
+[consoleLoader :webit.script.happy.console.loader.ConsoleLoader]
 
 [engine]
 inits +='''
   classpath:/inits/console.wit
 '''
-
-[consoleFileLoader :webit.script.happy.console.loader.ConsoleFileLoader]
-[consoleLoader :webit.script.happy.console.loader.ConsoleLoader]
 
 [routeLoader]
 loaders +='''

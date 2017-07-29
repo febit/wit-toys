@@ -14,7 +14,7 @@ public class ConsoleGlobalRegister implements GlobalRegister {
 
     public static final String CONSOLE = "console";
 
-    private ConsoleAttrabutes consoleAttrabutes;
+    private ConsoleSession consoleAttrabutes;
 
     @Override
     public void regist(GlobalManager manager) {
@@ -23,6 +23,6 @@ public class ConsoleGlobalRegister implements GlobalRegister {
 
     @Init
     public void init(Engine engine) {
-        this.consoleAttrabutes = (ConsoleAttrabutes) engine.getConfig(Console.CONSOLE_CONFIG_KEY);
+        this.consoleAttrabutes = (ConsoleSession) engine.getConfig(Console.CONSOLE_CONFIG_KEY);
     }
 }
