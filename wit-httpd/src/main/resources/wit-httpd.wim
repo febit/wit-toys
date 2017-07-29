@@ -1,0 +1,30 @@
+
+# Wit Engine 配置文件
+
+[engine]
+inits +='''
+  /inits/httpd.wit
+'''
+# 注册几个免声明的变量
+vars +='''
+  $_METHOD
+  $_COOKIE
+  $_SESSION
+  $_PARAM
+  $_FILE
+  $_HEADER
+'''
+
+[pagesLoader :classpathLoader]
+root=pages
+
+[routeLoader]
+defaultLoader=pagesLoader
+# 覆盖掉缺省的不安全的加载器
+loaders='''
+'''
+
+[global]
+registers +='''
+  org.febit.wit.toy.httpd.ContextMethods
+'''

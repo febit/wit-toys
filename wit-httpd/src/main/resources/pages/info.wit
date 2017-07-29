@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<%
+  // 以下变量已经免声明了, 可以直接使用
+  //   $_METHOD  $_COOKIE  $_PARAM  $_FILE  $_HEADER
+%>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h2>ID: ${id()}</h2>
+  <h2>Now: ${now()}</h2>
+  <h2>$_METHOD: ${$_METHOD}</h2>
+  <h2>$_HEADER: ${$_HEADER.~size()} </h2>
+  <% for(key, value : $_HEADER) { %>
+    <p>${key}: ${value}</p>
+  <%  } %>
+  <h2>$_COOKIE: ${$_COOKIE.~size()}</h2>
+  <% for(key, value : $_COOKIE) { %>
+    <p>${key}: ${value}</p>
+  <%  } %>
+  <h2>$_PARAM: ${$_PARAM.~size()}</h2>
+  <% for(key, value : $_PARAM) { %>
+    <p>${key}: ${value}</p>
+  <%  } %>
+  <h2>$_FILE: ${$_FILE.~size()}</h2>
+  <% for(key, value : $_FILE) { %>
+    <p>${key}: ${value}</p>
+  <%  } %>
+</body>

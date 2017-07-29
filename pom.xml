@@ -27,9 +27,11 @@
     <febit-common.version>2.6.0-SNAPSHOT</febit-common.version>
     <wit.version>2.1.0-beta</wit.version>
     <slf4j.version>1.7.25</slf4j.version>
+    <dist-finalName>${project.build.finalName}-dist</dist-finalName>
   </properties>
   <modules>
     <module>happy-console</module>
+    <module>wit-httpd</module>
   </modules>
   <developers>
     <developer>
@@ -110,7 +112,7 @@
               </execution>
             </executions>
             <configuration>
-              <finalName>${project.build.finalName}-dist</finalName>
+              <finalName>${dist-finalName}</finalName>
               <artifactSet>
                 <includes>
                   <include>*:*</include>

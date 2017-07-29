@@ -1,0 +1,4 @@
+<%
+  setStatusCode(500);
+%>
+Server error: 500 的错误示范!

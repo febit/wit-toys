@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<%
+  
+  var key = $_PARAM.key;
+  var value = $_PARAM["value"];
+  var remove = toBoolean($_PARAM["remove"]);
+
+  if(key){
+    if(remove){
+      removeCookie(key);
+    } else {
+      setCookie(key, value);
+    }
+  }
+%>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <p>参数: key, value, remove. 设置 remove 为 1 或 on 或 true 则删除指定的 cookie </p>
+  <h2>key: ${key}</h2>
+  <h2>value: ${value}</h2>
+  <h2>remove: ${remove}</h2>
+  <h2>$_COOKIE (原):</h2>
+  <% for(key, value : $_COOKIE) { %>
+    <p>${key}: ${value}</p>
+  <%  } %>
+</body>
