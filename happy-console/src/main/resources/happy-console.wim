@@ -1,8 +1,8 @@
 
 # Wit Engine 配置文件
 
-[consoleFileLoader :webit.script.happy.console.loader.ConsoleFileLoader]
-[consoleLoader :webit.script.happy.console.loader.ConsoleLoader]
+[consoleFileLoader :org.febit.wit.toy.console.loader.ConsoleFileLoader]
+[consoleLoader :org.febit.wit.toy.console.loader.ConsoleLoader]
 
 [engine]
 inits +='''
@@ -17,5 +17,5 @@ cmd:  consoleLoader
 
 [global]
 registers +='''
-  webit.script.happy.console.ConsoleGlobalRegister
+  org.febit.wit.toy.console.ConsoleGlobalRegister
 '''
