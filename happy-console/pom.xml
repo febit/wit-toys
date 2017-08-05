@@ -9,10 +9,59 @@
   </parent>
   <packaging>jar</packaging>
   <artifactId>happy-console</artifactId>
+  <properties>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.febit.wit</groupId>
       <artifactId>wit-core</artifactId>
     </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>termux-package</id>
+      <properties>
+        <android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>
+        <android.sdk.platform>${env.ANDROID_SDK_PLATFORM}</android.sdk.platform>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+            <artifactId>android-maven-plugin</artifactId>
+            <configuration>
+              <attachJar>false</attachJar>
+            </configuration>
+            <executions>
+              <execution>
+                <id>package-dex</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>dex</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>termux-zip</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/termux-zip.xml</descriptor>
+                  </descriptors>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
