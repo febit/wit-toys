@@ -15,6 +15,10 @@ file: consoleFileLoader
 cmd:  consoleLoader
 '''
 
+# disable asm impls
+[nativeFactory :defaultNativeFactory]
+[resolverManager :defaultResolverManager]
+
 [global]
 registers +='''
   org.febit.wit.toy.console.ConsoleGlobalRegister

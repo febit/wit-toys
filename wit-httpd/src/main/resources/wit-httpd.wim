@@ -28,3 +28,8 @@ loaders='''
 registers +='''
   org.febit.wit.toy.httpd.ContextMethods
 '''
+
+
+# disable asm impls
+[nativeFactory :defaultNativeFactory]
+[resolverManager :defaultResolverManager]
