@@ -10,6 +10,7 @@
   <artifactId>wit-httpd</artifactId>
   <properties>
     <dist-finalName>_DIST</dist-finalName>
+    <nanohttpd.version>2.3.1</nanohttpd.version>
   </properties>
   <build>
     <plugins>
@@ -34,7 +35,7 @@
     <dependency>
       <groupId>org.nanohttpd</groupId>  
       <artifactId>nanohttpd</artifactId>
-      <version>2.3.1</version>
+      <version>${nanohttpd.version}</version>
     </dependency>
   </dependencies>
 </project>
