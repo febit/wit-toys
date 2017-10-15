@@ -1,26 +1,14 @@
 <%
 var CONST;
 
-CONST.exit = function(){
-    console.exitFlag = true;
-};
+CONST.exit = () -> {console.exitFlag = true}
 
-CONST.cd = function(to){
-    return console.~cd(to);
-};
-
-CONST.exec = function(template){
-    return console.~exec(template);
-};
-
-CONST.showLastException = function(){
-    return console.~showLastException(console);
-};
+CONST.cd = to -> console.~cd(to)
+CONST.exec = template -> console.~exec(template)
+CONST.showLastException = () -> console.~showLastException(console)
 
 CONST.dir = 
-CONST.ls  = function(path){
-    console.~dir(path);
-};
+CONST.ls  = path -> {console.~dir(path)}
 
 
 %>

@@ -1,5 +1,5 @@
 <%
-  setContentType("text/plain");
+  setContentType("text/plain")
 %>
 setContentType 示范!
 <a>将显示前后的 HTTP 标签</a>

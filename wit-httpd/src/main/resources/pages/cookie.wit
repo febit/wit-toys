@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <%
   
-  var key = $_PARAM.key;
-  var value = $_PARAM["value"];
-  var remove = toBoolean($_PARAM["remove"]);
+  var key = $_PARAM.key
+  var value = $_PARAM["value"]
+  var remove = toBoolean($_PARAM["remove"])
 
   if(key){
     if(remove){
-      removeCookie(key);
+      removeCookie(key)
     } else {
-      setCookie(key, value);
+      setCookie(key, value)
     }
   }
 %>
