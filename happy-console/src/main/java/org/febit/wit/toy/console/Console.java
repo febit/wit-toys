@@ -30,7 +30,6 @@ import org.febit.wit.Template;
 import org.febit.wit.exceptions.ParseException;
 import org.febit.wit.exceptions.ResourceNotFoundException;
 import org.febit.wit.exceptions.ScriptRuntimeException;
-import org.febit.wit.global.GlobalManager;
 import org.febit.wit.toy.console.util.EnvUtil;
 import org.febit.wit.toy.console.util.PrintStreamWriter;
 import org.febit.wit.toy.console.util.StringUtil;
@@ -170,12 +169,7 @@ public class Console {
             //export to global
             Map<String, Object> vars = new HashMap<>();
             context.exportTo(vars);
-            if (!vars.isEmpty()) {
-                GlobalManager globalManager = this.engine.getGlobalManager();
-                for (Map.Entry<String, Object> entry : vars.entrySet()) {
-                    globalManager.setGlobal(entry.getKey(), entry.getValue());
-                }
-            }
+            vars.forEach(this.engine.getGlobalManager()::setGlobal);
             this.lastException = null;
         } catch (ParseException ex) {
             this.lastException = ex;

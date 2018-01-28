@@ -17,11 +17,11 @@ package org.febit.wit.toy.console.loader;
 
 import org.febit.wit.Engine;
 import org.febit.wit.Init;
-import org.febit.wit.toy.console.Console;
-import org.febit.wit.toy.console.ConsoleSession;
 import org.febit.wit.loaders.Loader;
 import org.febit.wit.loaders.Resource;
 import org.febit.wit.loaders.impl.resources.FileResource;
+import org.febit.wit.toy.console.Console;
+import org.febit.wit.toy.console.ConsoleSession;
 import org.febit.wit.util.FileNameUtil;
 
 /**

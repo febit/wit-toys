@@ -177,9 +177,7 @@ public class WitHTTPD extends NanoHTTPD {
                 new ByteArrayInputStream(bytes),
                 bytes.length
         );
-        for (Map.Entry<String, String> entry : witResponce.getHeader().entrySet()) {
-            response.addHeader(entry.getKey(), entry.getValue());
-        }
+        witResponce.getHeader().forEach(response::addHeader);
         return response;
     }
 

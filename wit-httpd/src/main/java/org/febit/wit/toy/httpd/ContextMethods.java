@@ -33,24 +33,9 @@ public class ContextMethods implements GlobalRegister {
 
     private static final AtomicLong NEXT_ID = new AtomicLong(1);
 
-    public static final MethodDeclare noop = new MethodDeclare() {
-      @Override
-      public Object invoke(InternalContext context, Object[] args) {
-        return null;
-      }
-    };
-    public static final MethodDeclare id = new MethodDeclare() {
-      @Override
-      public Object invoke(InternalContext context, Object[] args) {
-        return NEXT_ID.getAndIncrement();
-      }
-    };
-    public static final MethodDeclare now = new MethodDeclare() {
-      @Override
-      public Object invoke(InternalContext context, Object[] args) {
-        return System.currentTimeMillis();
-      }
-    };
+    public static final MethodDeclare noop = (context, args) -> null;
+    public static final MethodDeclare id = (context, args) -> NEXT_ID.getAndIncrement();
+    public static final MethodDeclare now = (context, args) -> System.currentTimeMillis();
 
     public static void setStatusCode(int code) {
         WitHTTPD.getWitResponce().setStatusCode(code);
