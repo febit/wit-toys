@@ -175,7 +175,6 @@ public class Console {
                 for (Map.Entry<String, Object> entry : vars.entrySet()) {
                     globalManager.setGlobal(entry.getKey(), entry.getValue());
                 }
-                globalManager.commit();
             }
             this.lastException = null;
         } catch (ParseException ex) {
