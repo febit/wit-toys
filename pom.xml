@@ -25,7 +25,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <febit-common.version>2.7.0-SNAPSHOT</febit-common.version>
-    <wit.version>2.5.0-beta</wit.version>
+    <wit.version>2.6.0</wit.version>
     <slf4j.version>1.7.25</slf4j.version>
     <dist-finalName>${project.build.finalName}-dist</dist-finalName>
   </properties>
