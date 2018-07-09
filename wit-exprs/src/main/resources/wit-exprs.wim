@@ -1,0 +1,29 @@
+
+# Wit Engine 配置文件
+
+[exprLoader :org.febit.wit.toy.exprs.loader.ExprsLoader]
+
+[engine]
+# 变量免声明
+looseVar=true
+
+# 可选： 执行初始化声明
+inits +='''
+  classpath:/inits/common.wit
+'''
+
+[routeLoader]
+# 配置表达式 Loader
+loaders +='''
+  expr: exprLoader
+'''
+
+# disable asm impls
+[nativeFactory :defaultNativeFactory]
+[resolverManager :defaultResolverManager]
+
+[global]
+# 加载全局变量/函数
+registers +='''
+  org.febit.wit.toy.exprs.ExprsGlobalRegister
+'''

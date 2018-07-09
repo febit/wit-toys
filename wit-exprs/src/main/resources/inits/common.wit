@@ -1,0 +1,18 @@
+<%
+var CONST;
+
+CONST.COMMON_FLAG="common.wit loaded"
+
+var i = 1;
+
+CONST.nextId = () -> i++;
+
+var peekId = function(){
+  return i;
+}
+
+var add = function(a, b){
+  return a + b;
+}
+
+%>
